@@ -8,14 +8,14 @@ class Article:
         self.magazine_id = magazine_id
 
 
-        def save(self):
-            conn = get_db_connection()
-            cursor = conn.cursor()
-            cursor.execute('INSERT INTO articles (title, content, author_id, magazine_id) VALUES (?, ?, ?, ?)', 
-                    (self.title, self.content, self.author_id, self.magazine_id))
-            self._id = cursor.lastrowid
-            conn.commit()
-            conn.close()
+    def save(self):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO articles (title, content, author_id, magazine_id) VALUES (?, ?, ?, ?)', 
+            (self.title, self.content, self.author_id, self.magazine_id))
+        self._id = cursor.lastrowid
+        conn.commit()
+        conn.close()
 
     @property
     def title(self):

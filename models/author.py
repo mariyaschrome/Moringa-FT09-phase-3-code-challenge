@@ -8,6 +8,12 @@ class Author:
     def id(self):
         return self._id
     
+    @id.setter
+    def id(self, value):
+        if not isinstance(value, int):
+            raise ValueError("Id must be an integer")
+        self._id = value
+    
     @property
     def name(self):
         if not hasattr(self, '_name'):
@@ -33,7 +39,7 @@ class Author:
         from models.article import Article
         conn = get_db_connection()
         cursor = conn.cursor()
-        cursor.execute('SELECT * FROM articles WHERE author_id = ?', (self.id,))
+        cursor.execute('SELECT  FROM articles WHERE author_id = ?', (self.id,))
         articles = cursor.fetchall()
         conn.close()
         return [Article(article['id'], article['title'], article['content'], article['author_id'], article['magazine_id']) for article in articles]
@@ -44,7 +50,8 @@ class Author:
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute('''
-            SELECT DISTINCT magazines. * FROM magazines
+            SELECT DISTINCT magazines.name 
+            FROM magazines
             INNER JOIN articles ON magazines.id = articles.magazine_id
             WHERE articles.author_id = ?
         ''', (self._id,))
